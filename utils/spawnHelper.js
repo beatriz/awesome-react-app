@@ -1,17 +1,16 @@
-const spawn = require('cross-spawn')
+const spawn = require('cross-spawn');
 
-const spawnPromise = (command, args, options) => {
-    return new Promise ((resolve, reject) => {
-        const execution = spawn(command, args, options)
+const spawnPromise = (command, args, options) =>
+  new Promise((resolve, reject) => {
+    const execution = spawn(command, args, options);
 
-        execution.on('close', (code) => {
-            resolve();
-        });
+    execution.on('close', () => {
+      resolve();
+    });
 
-        execution.on('error', (err) => {
-            reject();
-        });
-    })
-}
+    execution.on('error', () => {
+      reject();
+    });
+  });
 
 module.exports = spawnPromise;

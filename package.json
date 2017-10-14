@@ -12,7 +12,7 @@
     "url": "https://github.com/ifactory-solutions/awesome-react-app.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eslint . -c ./hooks/eslint/.eslintrc.json",
     "release": "standard-version"
   },
   "keywords": [
@@ -34,6 +34,12 @@
     "yargs": "^9.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^16.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "standard-version": "^4.2.0"
   }
 }

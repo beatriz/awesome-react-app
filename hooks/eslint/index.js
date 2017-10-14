@@ -1,25 +1,32 @@
-const fs = require('fs-extra')
-const packageJsonHelper = require('./../../utils/packageJsonHelper')
-const emoji = require('node-emoji')
-const chalk = require('chalk')
-const spawn = require('./../../utils/spawnHelper')
-const loadPackageJsonFromPath = packageJsonHelper.loadPackageJsonFromPath
-const savePackageJsonIn = packageJsonHelper.savePackageJsonIn
+/* eslint max-len: ["error", { "ignoreTemplateLiterals": true }] */
+const fs = require('fs-extra');
+const packageJsonHelper = require('./../../utils/packageJsonHelper');
+const emoji = require('node-emoji');
+const chalk = require('chalk');
+const spawn = require('./../../utils/spawnHelper');
+
+const { loadPackageJsonFromPath, savePackageJsonIn } = packageJsonHelper;
 
 const question = {
   name: 'eslint',
   type: 'confirm',
-  message: 'Would you like to include eslint?'
-}
+  message: 'Would you like to include eslint?',
+};
 
-const func = (cwd, folderName) => {
-  console.log('\n\n')
-  console.log(`${emoji.get('fire')}  ${chalk.cyan('Installing eslint')} ${emoji.get('fire')}`)
-  console.log('\n\n')
+const installPackagesSuccess = (cwd, folderName) =>
+  loadPackageJsonFromPath(`${cwd}/${folderName}/package.json`)
+    .then(d => {
+      const data = d;
+      data.scripts.eslint = 'eslint .';
+      data.scripts.precommit = 'lint-staged';
+      data['lint-staged'] = {
+        '*.js': [
+          'eslint --cache --max-warnings 0',
+        ],
+      };
 
-  return fs.copy(`${__dirname}/.eslintrc.json`, `${cwd}/${folderName}/.eslintrc.json`)
-    .then(() => addEslintFileSuccess(cwd, folderName))
-}
+      return savePackageJsonIn(`${cwd}/${folderName}/package.json`, data);
+    });
 
 const addEslintFileSuccess = (cwd, folderName) => {
   const eslintDependencies = [
@@ -30,42 +37,37 @@ const addEslintFileSuccess = (cwd, folderName) => {
     'eslint-plugin-react',
     'babel-eslint',
     'lint-staged',
-    'husky'
-  ]
+    'husky',
+  ];
 
-  const command = `npm i ${eslintDependencies.join(' ')} --save-dev`
+  const command = `npm i ${eslintDependencies.join(' ')} --save-dev`;
 
   const terminalOpts = {
     cwd: `${cwd}/${folderName}`,
     shell: true,
-    stdio:'inherit'
-  }
+    stdio: 'inherit',
+  };
 
   return spawn(command, [], terminalOpts)
-    .then(() => installPackagesSuccess(cwd, folderName))
-}
+    .then(() => installPackagesSuccess(cwd, folderName));
+};
 
-const installPackagesSuccess = (cwd, folderName) => {
-  return loadPackageJsonFromPath(`${cwd}/${folderName}/package.json`)
-    .then( data => {
-      data.scripts.eslint =  'eslint .'
-      data.scripts.precommit = 'lint-staged'
-      data['lint-staged'] = {
-        '*.js': [
-          'eslint --cache --max-warnings 0'
-        ]
-      }
+const func = (cwd, folderName) => {
+  console.log('\n\n');
+  console.log(`${emoji.get('fire')}  ${chalk.cyan('Installing eslint')} ${emoji.get('fire')}`);
+  console.log('\n\n');
 
-      return savePackageJsonIn(`${cwd}/${folderName}/package.json`, data)
-    })
-}
+  return fs
+    .copy(`${__dirname}/.eslintrc.json`, `${cwd}/${folderName}/.eslintrc.json`)
+    .then(() => addEslintFileSuccess(cwd, folderName));
+};
 
 const action = {
   type: 'eslint',
-  func: func,
-}
+  func,
+};
 
 module.exports = {
-  action: action,
-  question: question,
-}
+  action,
+  question,
+};
