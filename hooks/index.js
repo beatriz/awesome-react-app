@@ -3,7 +3,8 @@ const hooks = [
   require('./eslint'),
   require('./commitlint'),
   require('./editorconfig'),
-];
+  require('./redux')
+]
 
 module.exports = {
   questions: hooks.map(hook => hook.question),
