@@ -1,4 +1,3 @@
-/* eslint max-len: ["error", { "ignoreTemplateLiterals": true }] */
 const fs = require('fs-extra');
 const emoji = require('node-emoji');
 const chalk = require('chalk');
@@ -16,7 +15,7 @@ const func = (cwd, folderName) => {
 
   return fs.copy(
     `${__dirname}/.editorconfig`,
-    `${cwd}/${folderName}/.editorconfig`
+    `${cwd}/${folderName}/.editorconfig`,
   );
 };
 

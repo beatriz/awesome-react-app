@@ -1,8 +1,7 @@
-/* eslint max-len: ["error", { "ignoreTemplateLiterals": true }] */
 const emoji = require('node-emoji');
 const chalk = require('chalk');
-const spawn = require('./../../utils/spawnHelper');
 const fs = require('fs-extra');
+const spawn = require('../../utils/spawnHelper');
 
 const question = {
   name: 'git',

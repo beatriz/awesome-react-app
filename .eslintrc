@@ -1,0 +1,25 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "arrow-parens": ["error", "as-needed"],
+    "implicit-arrow-linebreak": "off",
+    "no-confusing-arrow": "off",
+    "no-console": "off",
+    "indent": ["error", 2]
+  },
+  "overrides":[
+    {
+      "files": ["./hooks/redux/{reducer,store}.js"],
+      "rules": {
+        "max-len": ["error", 80],
+        "import/no-unresolved": "off"
+      }
+    },
+    {
+      "files": "./hooks/index.js",
+      "rules": {
+        "global-require": "off"
+      }
+    }
+  ]
+}

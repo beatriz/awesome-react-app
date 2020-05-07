@@ -1,9 +1,8 @@
-/* eslint max-len: ["error", { "ignoreTemplateLiterals": true }] */
 const fs = require('fs-extra');
-const packageJsonHelper = require('./../../utils/packageJsonHelper');
 const emoji = require('node-emoji');
 const chalk = require('chalk');
-const spawn = require('./../../utils/spawnHelper');
+const packageJsonHelper = require('../../utils/packageJsonHelper');
+const spawn = require('../../utils/spawnHelper');
 
 const { loadPackageJsonFromPath, savePackageJsonIn } = packageJsonHelper;
 

@@ -1,58 +1,56 @@
-const packageJsonHelper = require('./../../utils/packageJsonHelper')
-const emoji = require('node-emoji')
-const chalk = require('chalk')
-const fs = require('fs-extra')
-const spawn = require('./../../utils/spawnHelper')
-const loadPackageJsonFromPath = packageJsonHelper.loadPackageJsonFromPath
-const savePackageJsonIn = packageJsonHelper.savePackageJsonIn
+const emoji = require('node-emoji');
+const chalk = require('chalk');
+const fs = require('fs-extra');
+const packageJsonHelper = require('../../utils/packageJsonHelper');
+const spawn = require('../../utils/spawnHelper');
+
+const { loadPackageJsonFromPath, savePackageJsonIn } = packageJsonHelper;
 
 const question = {
   name: 'redux',
   type: 'confirm',
-  message: 'Would you like to include redux?'
-}
+  message: 'Would you like to include redux?',
+};
 
-const func = (cwd, folderName) => {
-  console.log('\n\n')
-  console.log(`${emoji.get('fire')}  ${chalk.cyan('Installing redux')} ${emoji.get('fire')}`)
-  console.log('\n\n')
-
-  return addRedux(cwd, folderName)
-    .then(() => fs.copy(`${__dirname}/reducer.js`, `${cwd}/${folderName}/src/reducer.js`))
-    .then(() => fs.copy(`${__dirname}/store.js`, `${cwd}/${folderName}/src/store.js`))
-}
+const installPackagesSuccess = (cwd, folderName) =>
+  loadPackageJsonFromPath(`${cwd}/${folderName}/package.json`)
+    .then(data =>
+      savePackageJsonIn(`${cwd}/${folderName}/package.json`, data));
 
 const addRedux = (cwd, folderName) => {
   const reduxDependencies = [
     'redux',
-    'react-redux'
-  ]
+    'react-redux',
+  ];
 
-  const command = `npm i ${reduxDependencies.join(' ')} --save-dev`
+  const command = `npm i ${reduxDependencies.join(' ')} --save-dev`;
 
   const terminalOpts = {
     cwd: `${cwd}/${folderName}`,
     shell: true,
-    stdio:'inherit'
-  }
+    stdio: 'inherit',
+  };
 
   return spawn(command, [], terminalOpts)
-    .then(() => installPackagesSuccess(cwd, folderName))
-}
+    .then(() => installPackagesSuccess(cwd, folderName));
+};
 
-const installPackagesSuccess = (cwd, folderName) => {
-  return loadPackageJsonFromPath(`${cwd}/${folderName}/package.json`)
-    .then(data => {
-      return savePackageJsonIn(`${cwd}/${folderName}/package.json`, data)
-    })
-}
+const func = (cwd, folderName) => {
+  console.log('\n\n');
+  console.log(`${emoji.get('fire')}  ${chalk.cyan('Installing redux')} ${emoji.get('fire')}`);
+  console.log('\n\n');
+
+  return addRedux(cwd, folderName)
+    .then(() => fs.copy(`${__dirname}/reducer.js`, `${cwd}/${folderName}/src/reducer.js`))
+    .then(() => fs.copy(`${__dirname}/store.js`, `${cwd}/${folderName}/src/store.js`));
+};
 
 const action = {
   type: 'redux',
-  func: func,
-}
+  func,
+};
 
 module.exports = {
-  action: action,
-  question: question,
-}
+  action,
+  question,
+};

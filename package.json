@@ -12,7 +12,7 @@
     "url": "https://github.com/ifactory-solutions/awesome-react-app.git"
   },
   "scripts": {
-    "test": "eslint . -c ./hooks/eslint/.eslintrc.json",
+    "test": "eslint . --no-eslintrc -c .eslintrc",
     "release": "standard-version"
   },
   "keywords": [

@@ -4,5 +4,5 @@ module.exports = path =>
   new Promise((resolve, reject) =>
     fs.access(
       path,
-      err => err ? reject() : resolve()
+      err => err ? reject() : resolve(),
     ));

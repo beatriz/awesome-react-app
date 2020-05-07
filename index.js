@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-/* eslint max-len: ["error", { "ignoreStrings": true }] */
 const chalk = require('chalk');
 const emoji = require('node-emoji');
 const Raven = require('raven');
-const checkFolderExists = require('./utils/checkFolderExists');
 const R = require('ramda');
+const checkFolderExists = require('./utils/checkFolderExists');
 
 // "awesomeCreateApp.js" runs some code, so Raven must be already installed
 Raven
@@ -23,13 +22,13 @@ const missingAppNameError = defaultErrorMessage(chalk
 const folderExistsError = folderName => {
   R.pipe(
     defaultErrorMessage,
-    console.log
+    console.log,
   )(`${chalk.blue(folderName)} directory already exists`);
 
   process.exit(1);
 };
 
-const { argv } = require('yargs')
+const { argv } = require('yargs') // eslint-disable-line import/order
   .usage('$0 <appName>')
   .demandCommand(1, missingAppNameError)
   .help()
